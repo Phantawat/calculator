@@ -1,4 +1,6 @@
 """Model of calculator compose of the calculator component"""
+"""Using state pattern, Waiting for implement"""
+from abc import *
 
 
 class CalculatorModel:
@@ -20,11 +22,9 @@ class CalculatorModel:
 
     def calculate_value(self):
         """Calculate and return the result"""
-        try:
-            result = eval(self.value)
-            return result
-        except Exception as e:
-            return "Error: " + str(e)
+        if not self.value:
+            return "Error, It's empty"
+        return eval(self.value)
 
     def get_value(self):
         """Get the value"""

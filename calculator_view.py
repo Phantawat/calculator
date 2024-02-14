@@ -1,6 +1,7 @@
 """The View represents the user interface.
 It displays the data from the Model and sends user inputs to the Controller."""
 import tkinter as tk
+from tkinter import ttk
 
 
 class CalculatorView(tk.Frame):
@@ -44,10 +45,14 @@ class CalculatorView(tk.Frame):
         """Make an operator pad"""
         oppad = tk.Frame()
         operations = ['+', '-', '*', '/', '^', '=', 'mod', 'DEL', 'CLR']
+        prefer_func = ['ln', 'log base 10', 'log2', 'sqrt']
         options = {'sticky': tk.NSEW, 'padx': 2, 'pady': 2}
         for i, op in enumerate(operations):
             tk.Button(oppad, text=op, fg='black', bg='orange', command=lambda x=op: self.controller.handler_click(x)).grid(
                 row=i, column=0, **options)
+        funcbox = ttk.Combobox(oppad, textvariable=self.value)
+        funcbox['value'] = prefer_func
+        funcbox.bind('<Key>', lambda x='<Key>': self.controller.handler_click(x))
         return oppad
 
     def pack_components(self):
@@ -71,9 +76,6 @@ class CalculatorView(tk.Frame):
 
     def display_result(self, result):
         self.value.set(result)
-
-    def set_value(self, value):
-        self.value = value
 
 
 if __name__ == '__main__':

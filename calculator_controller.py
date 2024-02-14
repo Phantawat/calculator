@@ -11,6 +11,9 @@ class CalculatorController:
         self.view = view
         self.model = model
 
+    def bind(self, *args):
+        self.view.display_result(args)
+
     def handler_click(self, button):
         if button in ['+', '-', '*', '/', '^', 'mod']:
             self.model.append_operator(button)
