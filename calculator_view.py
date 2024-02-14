@@ -44,7 +44,7 @@ class CalculatorView(tk.Frame):
     def make_operator(self):
         """Make an operator pad"""
         oppad = tk.Frame()
-        operations = ['+', '-', '*', '/', '^', '=', 'mod', 'DEL', 'CLR']
+        operations = ['+', '-', '*', '/', '**', '=', '%', 'DEL', 'CLR']
         prefer_func = ['ln', 'log base 10', 'log2', 'sqrt']
         options = {'sticky': tk.NSEW, 'padx': 2, 'pady': 2}
         for i, op in enumerate(operations):
