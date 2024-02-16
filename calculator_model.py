@@ -1,6 +1,4 @@
 """Model of calculator compose of the calculator component"""
-"""Using state pattern, Waiting for implement"""
-from abc import *
 
 
 class CalculatorModel:

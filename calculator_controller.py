@@ -15,8 +15,12 @@ class CalculatorController:
         self.view.display_result(args)
 
     def handler_click(self, button):
-        if button in ['+', '-', '*', '/', '**', '%']:
+        if button in ['+', '-', '*', '/']:
             self.model.append_operator(button)
+        elif button == '^':
+            self.model.append_operator('**')
+        elif button == 'mod':
+            self.model.append_operator('%')
         elif button == '=':
             result = self.model.calculate_value()
             self.view.display_result(result)

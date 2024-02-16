@@ -23,6 +23,12 @@ class CalculatorView(tk.Frame):
         self.pack_components()
         self.configure_pack()
 
+        for button in self.keypad.winfo_children():
+            button.bind("<Key>", lambda event, button=button: self.key_bind(event, button))
+
+        for button in self.oppad.winfo_children():
+            button.bind("<Key>", lambda event, button=button: self.key_bind(event, button))
+
     def make_keypad(self):
         """Create the keypad"""
         keypad = tk.Frame()
@@ -44,15 +50,16 @@ class CalculatorView(tk.Frame):
     def make_operator(self):
         """Make an operator pad"""
         oppad = tk.Frame()
-        operations = ['+', '-', '*', '/', '**', '=', '%', 'DEL', 'CLR']
-        prefer_func = ['ln', 'log base 10', 'log2', 'sqrt']
+        self.operations = ['+', '-', '*', '/', '^', '=', 'mod', 'DEL', 'CLR']
         options = {'sticky': tk.NSEW, 'padx': 2, 'pady': 2}
-        for i, op in enumerate(operations):
+        for i, op in enumerate(self.operations):
             tk.Button(oppad, text=op, fg='black', bg='orange', command=lambda x=op: self.controller.handler_click(x)).grid(
                 row=i, column=0, **options)
-        funcbox = ttk.Combobox(oppad, textvariable=self.value)
-        funcbox['value'] = prefer_func
-        funcbox.bind('<Key>', lambda x='<Key>': self.controller.handler_click(x))
+
+        choicebox = ['ln', 'log base 10', 'log2', 'sqrt']
+        funcbox = ttk.Combobox(oppad, values=choicebox)
+        funcbox.grid(row=len(self.operations) + 1, column=0, **options)
+        # funcbox.bind('<<ComboboxSelected>>', lambda x='<<ComboboxSelected>>': self.controller.handler_click(x))
         return oppad
 
     def pack_components(self):
@@ -71,11 +78,17 @@ class CalculatorView(tk.Frame):
         for i in range(len(self.keynames)):
             self.keypad.rowconfigure(i // self.column, weight=100)
             self.keypad.columnconfigure(i % self.column, weight=100)
-        self.oppad.rowconfigure(0, weight=1)
-        self.oppad.columnconfigure(0, weight=1)
+        for i in range(len(self.operations)):
+            self.oppad.rowconfigure(i % (len(self.operations) + 1), weight=1)
+            self.oppad.columnconfigure(0, weight=1)
 
     def display_result(self, result):
         self.value.set(result)
+
+    def key_bind(self, event, button):
+        print('hi')
+        num = button.cget('text')
+        self.controller.handler_click(num)
 
 
 if __name__ == '__main__':
