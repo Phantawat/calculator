@@ -11,6 +11,14 @@ class CalculatorController:
         self.view = view
         self.model = model
 
+        # for button in self.view.keypad.winfo_children():
+        #     button_text = button.cget('text')
+        #     button.config(command=lambda btn=button_text: self.button_clicked(btn))
+        #
+        # for button in self.view.oppad.winfo_children():
+        #     button_text = button.cget('text')
+        #     button.config(command=lambda btn=button_text: self.button_clicked(btn))
+
     def bind(self, *args):
         self.view.display_result(args)
 
@@ -21,9 +29,17 @@ class CalculatorController:
             self.model.append_operator('**')
         elif button == 'mod':
             self.model.append_operator('%')
+        elif button == 'ln':
+            self.model.append_other('log(')
+        elif button == 'log10':
+            self.model.append_other('log10(')
+        elif button == 'log2':
+            self.model.append_other('log2(')
+        elif button == 'sqrt':
+            self.model.append_other('sqrt(')
         elif button == '=':
             result = self.model.calculate_value()
-            self.view.display_result(result)
+            self.view.display_result(str(result))
         elif button == 'CLR':
             self.model.clear_display()
             self.view.display_result('')

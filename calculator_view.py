@@ -11,7 +11,9 @@ class CalculatorView(tk.Frame):
         self.parent = parent
         self.keynames = keynames
         self.column = column
+        self.options = {'sticky': tk.NSEW, 'padx': 2, 'pady': 2}
         self.value = tk.StringVar()
+        self.other = ''
         self.init_components()
 
     def init_components(self):
@@ -20,23 +22,23 @@ class CalculatorView(tk.Frame):
         self.display = self.make_display()
         self.keypad = self.make_keypad()
         self.oppad = self.make_operator()
+        self.make_otherfunc()
         self.pack_components()
         self.configure_pack()
 
         for button in self.keypad.winfo_children():
-            button.bind("<Key>", lambda event, button=button: self.key_bind(event, button))
+            button.bind("<Key>", lambda event, button1=button: self.key_bind(button1))
 
         for button in self.oppad.winfo_children():
-            button.bind("<Key>", lambda event, button=button: self.key_bind(event, button))
+            button.bind("<Key>", lambda event, button1=button: self.key_bind(button1))
 
     def make_keypad(self):
         """Create the keypad"""
         keypad = tk.Frame()
-        options = {'sticky': tk.NSEW, 'padx': 2, 'pady': 2}
         row = 0
         for i, num in enumerate(self.keynames):
             tk.Button(keypad, text=num, fg='black', command=lambda x=num: self.controller.handler_click(x)).grid(row=row, column=abs(
-                i % 3), **options)
+                i % 3), **self.options)
             if i % 3 == 2:
                 row += 1
         return keypad
@@ -51,16 +53,24 @@ class CalculatorView(tk.Frame):
         """Make an operator pad"""
         oppad = tk.Frame()
         self.operations = ['+', '-', '*', '/', '^', '=', 'mod', 'DEL', 'CLR']
-        options = {'sticky': tk.NSEW, 'padx': 2, 'pady': 2}
         for i, op in enumerate(self.operations):
             tk.Button(oppad, text=op, fg='black', bg='orange', command=lambda x=op: self.controller.handler_click(x)).grid(
-                row=i, column=0, **options)
-
-        choicebox = ['ln', 'log base 10', 'log2', 'sqrt']
-        funcbox = ttk.Combobox(oppad, values=choicebox)
-        funcbox.grid(row=len(self.operations) + 1, column=0, **options)
-        # funcbox.bind('<<ComboboxSelected>>', lambda x='<<ComboboxSelected>>': self.controller.handler_click(x))
+                row=i, column=0, **self.options)
+        other_function = tk.Button(oppad, text='Other', fg='black', bg='orange', command=lambda x=self.other: self.controller.handler_click(self.other))
+        other_function.grid(row=len(self.operations)+1, column=0, **self.options)
         return oppad
+
+    def make_otherfunc(self):
+        """Make another function box"""
+        choicebox = ['ln', 'log10', 'log2', 'sqrt']
+        funcbox = tk.Menu()
+        self.parent.config(menu=funcbox)
+        funcbox_menu = tk.Menu(funcbox, tearoff=0)
+        funcbox.add_cascade(label='Others', menu=funcbox_menu)
+        for choice in choicebox:
+            funcbox_menu.add_radiobutton(label=choice, command=lambda x=choice: self.set_other(x))
+        funcbox_menu.add_separator()
+        funcbox_menu.add_command(label='Exit', command=self.quit)
 
     def pack_components(self):
         self.display.pack(side=tk.TOP, fill=tk.X)
@@ -83,12 +93,17 @@ class CalculatorView(tk.Frame):
             self.oppad.columnconfigure(0, weight=1)
 
     def display_result(self, result):
+        if result.startswith("math."):
+            result = result[len("math."):]
         self.value.set(result)
 
-    def key_bind(self, event, button):
+    def key_bind(self, button):
         print('hi')
         num = button.cget('text')
         self.controller.handler_click(num)
+
+    def set_other(self, choice):
+        self.other = choice
 
 
 if __name__ == '__main__':

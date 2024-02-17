@@ -1,4 +1,6 @@
 """Model of calculator compose of the calculator component"""
+import math
+from math import *
 
 
 class CalculatorModel:
@@ -12,10 +14,14 @@ class CalculatorModel:
     def append_digit(self, value):
         self.value += value
 
+    def append_other(self, value):
+        self.value += "math." + value
+
     def clear_display(self):
         self.value = ''
 
     def delete_last_index(self):
+        # value = self.value.split()
         self.value = self.value[:-1]
 
     def calculate_value(self):
