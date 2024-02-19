@@ -1,4 +1,4 @@
-### Calculation Application
+# Calculation Application
 
 ## Overview
 
