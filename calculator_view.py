@@ -1,8 +1,8 @@
 """The View represents the user interface.
 It displays the data from the Model and sends user inputs to the Controller."""
 import tkinter as tk
-from  playsound import playsound
-from tkinter import ttk
+import winsound
+from playsound import playsound
 
 
 class CalculatorView(tk.Frame):
@@ -30,12 +30,6 @@ class CalculatorView(tk.Frame):
         self.make_otherfunc()
         self.pack_components()
         self.configure_pack()
-
-        # for button in self.keypad.winfo_children():
-        #     button.bind("<Button-1>", self.invalid_input)
-        #
-        # for button in self.oppad.winfo_children():
-        #     button.bind("<Button-1>", self.invalid_input)
 
     def make_keypad(self):
         """Create the keypad"""
@@ -91,6 +85,7 @@ class CalculatorView(tk.Frame):
         self.display_result(value)
 
     def pack_components(self):
+        """Pack all components"""
         self.display.pack(side=tk.TOP, fill=tk.X)
         self.keypad.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
         self.oppad.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
@@ -100,12 +95,15 @@ class CalculatorView(tk.Frame):
         self.display.grid_columnconfigure(0, weight=1)
 
     def set_controller(self, controller):
+        """Setter for set controller"""
         self.controller = controller
 
     def set_value(self, value):
+        """Setter for set value"""
         self.value.set(value)
 
     def configure_pack(self):
+        """Configure of all button"""
         for i in range(len(self.keynames)):
             self.keypad.rowconfigure(i // self.column, weight=100)
             self.keypad.columnconfigure(i % self.column, weight=100)
@@ -114,52 +112,39 @@ class CalculatorView(tk.Frame):
             self.oppad.columnconfigure(0, weight=1)
 
     def display_result(self, result):
+        """Show result in the display"""
         if "math." in result:
             result = result.replace("math.", "", 1)
         if result == 'None':
             self.display.config(fg='red')
+            winsound.PlaySound('system-error-sound.mp3', winsound.SND_FILENAME)
         else:
             self.display.config(fg='yellow')
             self.value.set(result)
 
     def add_to_history(self, entry):
+        """Add an expression to the history"""
         self.history_list.append(entry)
         self.history.insert(tk.END, entry)
 
     def recall_from_history(self, event):
+        """Recall history back"""
         index = self.history.curselection()[0]
         value = self.history_list[index]
         self.display_result(value)
 
     def show_history(self):
+        """Show history frame"""
         self.historyframe.pack(side=tk.LEFT, fill=tk.BOTH)
         self.history.pack(side=tk.TOP, fill=tk.X)
         self.h = 'open'
 
     def hide_history(self):
+        """Hide history frame"""
         self.history.pack_forget()
         self.h = 'close'
-        self.historyframe.destroy()
-
-    def invalid_input(self, *args):
-        """Check input if it's a number"""
-        value = self.value.get()
-        try:
-            eval(value)
-            self.display.config(fg='yellow')
-        except SyntaxError:
-            self.display.config(fg='red')
+        self.historyframe.pack_forget()
 
     def set_other(self, choice):
+        """Setter for set other math function"""
         self.other = choice
-
-
-if __name__ == '__main__':
-    keys = list('789456123 0.')  # = ['7','8','9',...]
-
-    root = tk.Tk()
-    root.title("Keypad Demo")
-    keypad = CalculatorView(root, keynames=keys, column=3)
-    keypad.pack(expand=True, fill=tk.BOTH)
-    root.geometry('400x500')
-    root.mainloop()

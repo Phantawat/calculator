@@ -12,20 +12,24 @@ class CalculatorModel:
         self.last_in = []
 
     def append_operator(self, button):
+        """Add operator and append function type in list"""
         self.value += button
         self.last_in.append('operator')
 
     def append_digit(self, value):
+        """Add value and append function type in list"""
         self.value += value
         self.last_in.append('digit')
 
     def append_other(self, value):
+        """Add other math function and append function type in list"""
         self.value += "math." + value
         self.last_in.append('function')
 
     def clear_display(self):
+        """Clear value and clear display"""
         self.value = ''
-        self.last_in.pop()
+        self.last_in.clear()
 
     def delete_last_index(self):
         """Delete last string in display"""
