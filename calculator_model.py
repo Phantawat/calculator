@@ -72,3 +72,7 @@ class CalculatorModel:
     def get_history(self):
         """Get the history"""
         return self.history
+
+    def set_value(self, value):
+        """Setter for set value"""
+        self.value = value

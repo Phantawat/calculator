@@ -37,7 +37,8 @@
 
 ## Issue
 - The calculator still have some issue that's when you recall history back
-  the input after that history is still counted and doesn't remove it.
+  user can recall any input or result to the Display by clicking on it but
+  it cannot calculate from the recalled result.
 
 [Uml_class_diagram](calculator_uml.png)
 
