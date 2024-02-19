@@ -113,8 +113,6 @@ class CalculatorView(tk.Frame):
 
     def display_result(self, result):
         """Show result in the display"""
-        if "math." in result:
-            result = result.replace("math.", "", 1)
         if result == 'None':
             self.display.config(fg='red')
             winsound.PlaySound('system-error-sound.mp3', winsound.SND_FILENAME)

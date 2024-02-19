@@ -23,7 +23,7 @@ class CalculatorModel:
 
     def append_other(self, value):
         """Add other math function and append function type in list"""
-        self.value += "math." + value
+        self.value += value
         self.last_in.append('function')
 
     def clear_display(self):
@@ -51,11 +51,11 @@ class CalculatorModel:
     def delete_function_input(self):
         """Delete last function input"""
         if self.value.endswith('sqrt(') or self.value.endswith('log2('):
-            self.value = self.value[:-10]
+            self.value = self.value[:-5]
         elif self.value.endswith('log('):
-            self.value = self.value[:-9]
+            self.value = self.value[:-4]
         elif self.value.endswith('log10('):
-            self.value = self.value[:-11]
+            self.value = self.value[:-6]
 
     def calculate_value(self):
         """Calculate and return the result"""
