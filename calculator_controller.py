@@ -32,7 +32,7 @@ class CalculatorController:
         elif button == 'h':
             if self.view.h == 'open':
                 self.view.hide_history()
-            else:
+            elif self.view.h == 'close':
                 self.view.show_history()
         elif button == '=':
             result = self.model.calculate_value()

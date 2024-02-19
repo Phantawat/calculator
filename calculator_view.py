@@ -79,7 +79,8 @@ class CalculatorView(tk.Frame):
 
     def make_history_chooser(self):
         """A menu for get history back"""
-        history_list = tk.Listbox(self, height=5, width=50)
+        self.historyframe = tk.Frame()
+        history_list = tk.Listbox(self.historyframe, height=5, width=50)
         history_list.bind('<Double-Button-1>', self.recall_history)
         return history_list
 
@@ -118,6 +119,7 @@ class CalculatorView(tk.Frame):
         if result == 'None':
             self.display.config(fg='red')
         else:
+            self.display.config(fg='yellow')
             self.value.set(result)
 
     def add_to_history(self, entry):
@@ -130,12 +132,14 @@ class CalculatorView(tk.Frame):
         self.display_result(value)
 
     def show_history(self):
+        self.historyframe.pack(side=tk.LEFT, fill=tk.BOTH)
         self.history.pack(side=tk.TOP, fill=tk.X)
         self.h = 'open'
 
     def hide_history(self):
         self.history.pack_forget()
         self.h = 'close'
+        self.historyframe.destroy()
 
     def invalid_input(self, *args):
         """Check input if it's a number"""
