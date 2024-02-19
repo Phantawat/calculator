@@ -29,9 +29,16 @@ class CalculatorController:
             self.model.append_other('log2(')
         elif button == 'sqrt':
             self.model.append_other('sqrt(')
+        elif button == 'h':
+            if self.view.h == 'open':
+                self.view.hide_history()
+            else:
+                self.view.show_history()
         elif button == '=':
             result = self.model.calculate_value()
             self.view.display_result(str(result))
+            self.view.add_to_history(self.model.get_value())
+            self.view.add_to_history(str(result))
         elif button == 'CLR':
             self.model.clear_display()
             self.view.display_result('')

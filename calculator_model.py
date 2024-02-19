@@ -8,7 +8,7 @@ class CalculatorModel:
 
     def __init__(self):
         self.value = ''
-        self.history = ''
+        self.history = []
         self.last_in = []
 
     def append_operator(self, button):
@@ -55,14 +55,17 @@ class CalculatorModel:
 
     def calculate_value(self):
         """Calculate and return the result"""
-        if not self.value:
-            return "Error, It's empty"
-        result = eval(self.value)
-        if result:
-            self.history += str(result)
-            return result
-        return None
+        try:
+            eval(self.value)
+        except SyntaxError:
+            return None
+        self.history.append(self.value)
+        return eval(self.value)
 
     def get_value(self):
         """Get the value"""
         return self.value
+
+    def get_history(self):
+        """Get the history"""
+        return self.history

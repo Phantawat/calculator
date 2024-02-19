@@ -9,11 +9,13 @@ class CalculatorView(tk.Frame):
     """Calculator class keep the interface for user"""
     def __init__(self, parent, keynames: list, column):
         super().__init__(parent)
+        self.h = 'close'
         self.parent = parent
         self.keynames = keynames
         self.column = column
         self.options = {'sticky': tk.NSEW, 'padx': 2, 'pady': 2}
         self.value = tk.StringVar()
+        self.history_list = []
         self.other = ''
         self.init_components()
 
@@ -23,15 +25,17 @@ class CalculatorView(tk.Frame):
         self.display = self.make_display()
         self.keypad = self.make_keypad()
         self.oppad = self.make_operator()
+        self.history = self.make_history_chooser()
+        self.history.pack_forget()
         self.make_otherfunc()
         self.pack_components()
         self.configure_pack()
 
-        for button in self.keypad.winfo_children():
-            button.bind("<Button-1>", self.invalid_input)
-
-        for button in self.oppad.winfo_children():
-            button.bind("<Button-1>", self.invalid_input)
+        # for button in self.keypad.winfo_children():
+        #     button.bind("<Button-1>", self.invalid_input)
+        #
+        # for button in self.oppad.winfo_children():
+        #     button.bind("<Button-1>", self.invalid_input)
 
     def make_keypad(self):
         """Create the keypad"""
@@ -73,6 +77,18 @@ class CalculatorView(tk.Frame):
         funcbox_menu.add_separator()
         funcbox_menu.add_command(label='Exit', command=self.quit)
 
+    def make_history_chooser(self):
+        """A menu for get history back"""
+        history_list = tk.Listbox(self, height=5, width=50)
+        history_list.bind('<Double-Button-1>', self.recall_history)
+        return history_list
+
+    def recall_history(self, event):
+        """Recall history back"""
+        index = self.history.curselection()[0]
+        value = self.history_list[index]
+        self.display_result(value)
+
     def pack_components(self):
         self.display.pack(side=tk.TOP, fill=tk.X)
         self.keypad.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
@@ -85,6 +101,9 @@ class CalculatorView(tk.Frame):
     def set_controller(self, controller):
         self.controller = controller
 
+    def set_value(self, value):
+        self.value.set(value)
+
     def configure_pack(self):
         for i in range(len(self.keynames)):
             self.keypad.rowconfigure(i // self.column, weight=100)
@@ -96,12 +115,27 @@ class CalculatorView(tk.Frame):
     def display_result(self, result):
         if "math." in result:
             result = result.replace("math.", "", 1)
-        self.value.set(result)
+        if result == 'None':
+            self.display.config(fg='red')
+        else:
+            self.value.set(result)
 
-    def key_bind(self, button):
-        print('hi')
-        num = button.cget('text')
-        self.controller.handler_click(num)
+    def add_to_history(self, entry):
+        self.history_list.append(entry)
+        self.history.insert(tk.END, entry)
+
+    def recall_from_history(self, event):
+        index = self.history.curselection()[0]
+        value = self.history_list[index]
+        self.display_result(value)
+
+    def show_history(self):
+        self.history.pack(side=tk.TOP, fill=tk.X)
+        self.h = 'open'
+
+    def hide_history(self):
+        self.history.pack_forget()
+        self.h = 'close'
 
     def invalid_input(self, *args):
         """Check input if it's a number"""
@@ -109,7 +143,6 @@ class CalculatorView(tk.Frame):
         try:
             eval(value)
             self.display.config(fg='yellow')
-            # playsound('น้าค่อม.mp3')
         except SyntaxError:
             self.display.config(fg='red')
 
