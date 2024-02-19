@@ -35,3 +35,5 @@
 - Phantawat Lueangisiriwattana
 - 6610545871
 
+[Uml_class_diagram](calculator_uml.png)
+

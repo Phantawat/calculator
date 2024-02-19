@@ -6,7 +6,7 @@ from calculator_controller import CalculatorController
 if __name__ == "__main__":
     root = tk.Tk()
     model = CalculatorModel()
-    view = CalculatorView(root, list('e H789456123)0.'), column=3)
+    view = CalculatorView(root, list('()H789456123e0.'), column=3)
     controller = CalculatorController(view, model)
     view.set_controller(controller)
     root.title("Calculator")
