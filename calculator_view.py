@@ -1,6 +1,7 @@
 """The View represents the user interface.
 It displays the data from the Model and sends user inputs to the Controller."""
 import tkinter as tk
+from  playsound import playsound
 from tkinter import ttk
 
 
@@ -27,10 +28,10 @@ class CalculatorView(tk.Frame):
         self.configure_pack()
 
         for button in self.keypad.winfo_children():
-            button.bind("<Key>", lambda event, button1=button: self.key_bind(button1))
+            button.bind("<Button-1>", self.invalid_input)
 
         for button in self.oppad.winfo_children():
-            button.bind("<Key>", lambda event, button1=button: self.key_bind(button1))
+            button.bind("<Button-1>", self.invalid_input)
 
     def make_keypad(self):
         """Create the keypad"""
@@ -93,14 +94,24 @@ class CalculatorView(tk.Frame):
             self.oppad.columnconfigure(0, weight=1)
 
     def display_result(self, result):
-        if result.startswith("math."):
-            result = result[len("math."):]
+        if "math." in result:
+            result = result.replace("math.", "", 1)
         self.value.set(result)
 
     def key_bind(self, button):
         print('hi')
         num = button.cget('text')
         self.controller.handler_click(num)
+
+    def invalid_input(self, *args):
+        """Check input if it's a number"""
+        value = self.value.get()
+        try:
+            eval(value)
+            self.display.config(fg='yellow')
+            # playsound('น้าค่อม.mp3')
+        except SyntaxError:
+            self.display.config(fg='red')
 
     def set_other(self, choice):
         self.other = choice

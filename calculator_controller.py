@@ -11,14 +11,6 @@ class CalculatorController:
         self.view = view
         self.model = model
 
-        # for button in self.view.keypad.winfo_children():
-        #     button_text = button.cget('text')
-        #     button.config(command=lambda btn=button_text: self.button_clicked(btn))
-        #
-        # for button in self.view.oppad.winfo_children():
-        #     button_text = button.cget('text')
-        #     button.config(command=lambda btn=button_text: self.button_clicked(btn))
-
     def bind(self, *args):
         self.view.display_result(args)
 
