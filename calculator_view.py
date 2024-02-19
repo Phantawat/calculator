@@ -127,9 +127,10 @@ class CalculatorView(tk.Frame):
 
     def recall_from_history(self, event):
         """Recall history back"""
+        print(event)
         index = self.history.curselection()[0]
         value = self.history_list[index]
-        self.display_result(value)
+        self.set_value(value)
 
     def show_history(self):
         """Show history frame"""

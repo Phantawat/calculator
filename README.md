@@ -35,5 +35,9 @@
 - Phantawat Lueangisiriwattana
 - 6610545871
 
+## Issue
+- The calculator still have some issue that's when you recall history back
+  the input after that history is still counted and doesn't remove it.
+
 [Uml_class_diagram](calculator_uml.png)
 
