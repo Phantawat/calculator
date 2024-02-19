@@ -1,8 +1,5 @@
 """The Controller handles user input and updates the Model accordingly. It also updates the View
 based on changes in the Model."""
-import tkinter as tk
-from calculator_view import CalculatorView
-from calculator_model import CalculatorModel
 
 
 class CalculatorController:

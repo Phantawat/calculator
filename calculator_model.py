@@ -1,5 +1,4 @@
 """Model of calculator compose of the calculator component"""
-import math
 from math import *
 
 
